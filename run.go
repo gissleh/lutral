@@ -494,7 +494,6 @@ func GenerateInitialSubTreeMap() map[string]*Node {
 			BuildTree("me+|pxe+|ay+", "$np2"),
 			BuildTree("fì-|tsa-|pe+", "$np2"),
 			BuildTree("fì-|tsa-|pe+", "me+|pxe+|ay+", "$np2"),
-			BuildTree("sna-|munsna-", "$np2"),
 			BuildTree("fra-", "$np2"),
 			BuildTree("fra-", "ay+", "$np2"),
 			BuildTree("fay+|pay+", "$np2"),
@@ -502,35 +501,39 @@ func GenerateInitialSubTreeMap() map[string]*Node {
 		// Noun prefixes for modifying the noun (called by np or np_numbers only)
 		"np2": CombineTrees(
 			BuildTree("/return"),
-			BuildTree("fne-", "/return"),
+			BuildTree("fne-|sna-|munsna-", "/return"),
 		),
 		// Noun suffixes that modify
 		"nsmod": CombineTrees(
-			BuildTree("$nsadp"),
+			BuildTree("$nsadp|$nsto"),
 			BuildTree("-sì", "/return"),
-			BuildTree("-fkeyk", "$ncec|$nsmod_fkeyk|$nsadp"),
-			BuildTree("-tsyìp", "$ncec|$nsmod_tsyìp|$nsadp"),
-			BuildTree("-o", "$ncevou|$nsadp"),
-			BuildTree("-pe", "$ncev|$nsadp"),
+			BuildTree("-fkeyk", "$nsmod_fkeyk"),
+			BuildTree("-tsyìp", "$nsmod_tsyìp"),
+			BuildTree("-o", "$nsto|$ncevou|$nsadp"),
+			BuildTree("-pe", "$nsto|$ncev|$nsadp"),
 		),
 		// Noun suffixed that modify and can follow -fkeyk
 		"nsmod_fkeyk": CombineTrees(
+			BuildTree("$ncec|$nsto|$nsadp"),
 			BuildTree("-tsyìp", "$ncec|$nsmod_tsyìp|$nsadp"),
 			BuildTree("-o", "$ncevou|$nsadp"),
-			BuildTree("-pe", "$ncev|$nsadp"),
+			BuildTree("-pe", "$nsto|$ncev|$nsadp"),
 		),
 		// Noun suffixes that modify and can follow -tsyìp
 		"nsmod_tsyìp": CombineTrees(
+			BuildTree("$ncec|$nsto|$nsadp"),
 			BuildTree("-o", "$ncevou|$nsadp"),
-			BuildTree("-pe", "$ncev|$nsadp"),
+			BuildTree("-pe", "$nsto|$ncev|$nsadp"),
 		),
 		// Modify noun-part of si-verbs
 		"nsmod_si": CombineTrees(
 			BuildTree("/return"),
-			BuildTree("-o|-pe", "/return"),
-			BuildTree("-tsyìp", "/return"),
-			BuildTree("-tsyìp", "-o|-pe", "/return"),
+			BuildTree("-o|-pe", "$nsto|/return"),
+			BuildTree("-tsyìp", "$nsto|/return"),
+			BuildTree("-tsyìp", "-o|-pe", "$nsto|/return"),
 		),
+		// Allow -to or return
+		"nsto": BuildTree("-to", "/return"),
 		// Noun suffixes from adpositions. To be filled by Dictionary
 		"nsadp": EmptyTree(),
 		// Noun case endings: vowels

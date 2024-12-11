@@ -22,7 +22,7 @@ func NounFromEntry(entry Entry) *Node {
 		)
 	} else if strings.Contains(word, " ") {
 		// This is pretty much just drawing boundaries based on known words.
-		// As of November 2024, they are (* marks where suffixes shall go)
+		// As of November 2024, they are the following words
 		//  toruk makto*         tsko swizaw*
 		//  eltu* lefngap        pängkxoyu* lekoren
 		//  tìftia* kifkeyä      uvan* letokx
@@ -34,6 +34,7 @@ func NounFromEntry(entry Entry) *Node {
 		//  txawnulsrung* a yur  txawnulsrung* a tswayon
 		//  trrpxì* Sawtuteyä    mo* letrrtrr
 		//  mo* a yom            mo* a hahaw
+		//  (* marks where suffixes shall go)
 
 		split := strings.Split(word, " ")
 		if len(split) > 2 { // txawnulsrung a tswayon, mo a hahaw, etc...
@@ -94,7 +95,10 @@ func generateNoun(core Node) *Node {
 		return nil
 	})
 
-	return res
+	return res.AndThen(*CombineTrees(
+		BuildTree("/hook"),
+		BuildTree("-sì"),
+	))
 }
 
 func generateNounTail(tail string) *Node {
