@@ -149,18 +149,30 @@ func (node *Node) AppendFrom(other Node) {
 			if child.Kind == NKLeafHook {
 				oldHooksParents = append(oldHooksParents, leaf)
 				oldHooksIndices = append(oldHooksIndices, i)
-				break
 			}
 		}
 
-		for _, child := range newChildren {
-			leaf.Children = append(leaf.Children, child.Copy())
-		}
+		fakeLeaf := *leaf
+		fakeLeaf.Children = newChildren
+		*leaf = *leaf.MergedWith(fakeLeaf)
 	}
 
 	for i, parent := range oldHooksParents {
 		index := oldHooksIndices[i]
 		parent.Children = append(parent.Children[:index], parent.Children[index+1:]...)
+	}
+}
+
+func (node *Node) RemoveLeafHooks() {
+	for i, child := range node.Children {
+		if child.Kind == NKLeafHook {
+			node.Children = append(node.Children[:i], node.Children[i+1:]...)
+			return
+		}
+	}
+
+	for i := range node.Children {
+		node.Children[i].RemoveLeafHooks()
 	}
 }
 
@@ -216,10 +228,6 @@ func (node *Node) Copy() Node {
 	if nodeCopy.Children != nil {
 		nodeCopy.Children = make([]Node, 0, len(node.Children))
 		for _, child := range node.Children {
-			if child.Kind == NKLeafHook {
-				continue
-			}
-
 			nodeCopy.Children = append(nodeCopy.Children, child.Copy())
 		}
 	}

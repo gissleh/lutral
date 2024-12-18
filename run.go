@@ -506,7 +506,6 @@ func GenerateInitialSubTreeMap() map[string]*Node {
 		// Noun suffixes that modify
 		"nsmod": CombineTrees(
 			BuildTree("$nsadp|$nsto"),
-			BuildTree("-sì", "/return"),
 			BuildTree("-fkeyk", "$nsmod_fkeyk"),
 			BuildTree("-tsyìp", "$nsmod_tsyìp"),
 			BuildTree("-o", "$nsto|$ncevou|$nsadp"),

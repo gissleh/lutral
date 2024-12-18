@@ -11,8 +11,5 @@ func AdpositionFromEntry(entry Entry) (res *Node, suffix *Node) {
 	}
 
 	return BuildTree(word).AndThenResult(resultValue),
-		CombineTrees(
-			BuildTree("-"+word, "/return"),
-			BuildTree("-"+word, "-sì", "/return"),
-		)
+		BuildTree("-"+word, "/return")
 }
